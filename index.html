@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Cafetería</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fondo: #1b1310;
+      --tarjeta: #261a15;
+      --texto: #f2e8da;
+      --suave: #bfae9c;
+      --caramelo: #e0a35a;
+      --linea: rgba(242, 232, 218, 0.18);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "DM Sans", Arial, sans-serif;
+      line-height: 1.5;
+      color: var(--texto);
+      background: var(--fondo);
+    }
+
+    /* Cabecera */
+    .cabecera { padding: 40px 16px 28px; text-align: center; }
+    h1 {
+      margin: 0 0 6px;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(34px, 8vw, 48px);
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .lema { margin: 0 0 20px; color: var(--suave); }
+    .subtitulo {
+      display: inline-block;
+      margin: 0;
+      padding: 9px 18px;
+      border-radius: 999px;
+      background: var(--caramelo);
+      color: var(--fondo);
+      font-weight: 700;
+      animation: flotar 2.4s ease-in-out infinite;
+    }
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+
+    /* Menú */
+    .menu { max-width: 640px; margin: 0 auto; padding: 8px 16px 56px; }
+    .categoria {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 36px 0 8px;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--caramelo);
+    }
+    .categoria::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--linea);
+    }
+    .item {
+      display: grid;
+      grid-template-columns: 104px 1fr;
+      gap: 16px;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--linea);
+    }
+    .item img {
+      width: 104px;
+      height: 104px;
+      object-fit: cover; /* si se corta la foto, cámbialo a contain */
+      border-radius: 16px;
+      background: var(--tarjeta);
+    }
+    .linea { display: flex; align-items: baseline; gap: 8px; }
+    .linea h3 { margin: 0; font-size: 18px; font-weight: 700; }
+    .punteado {
+      flex: 1;
+      border-bottom: 2px dotted var(--suave);
+      opacity: 0.6;
+      transform: translateY(-4px);
+    }
+    .precio {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--caramelo);
+      white-space: nowrap;
+    }
+    .item p { margin: 2px 0 0; font-size: 14.5px; color: var(--suave); }
+    .pedir {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 7px 14px;
+      border: 1.5px solid var(--caramelo);
+      border-radius: 999px;
+      color: var(--caramelo);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .pedir:hover { background: var(--caramelo); color: var(--fondo); }
+    .pedir:focus-visible { outline: 3px solid var(--texto); outline-offset: 3px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .subtitulo { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="cabecera">
+    <h1>Mi Cafetería</h1> <!-- Cambia el nombre -->
+    <p class="lema">Café recién hecho, cada día.</p> <!-- Cambia la frase -->
+    <p class="subtitulo">Haz tu pedido por WhatsApp</p>
+  </header>
+
+  <main id="menu" class="menu"></main>
+
+<script>
+  const numero = "51964224155"; // Tu número de WhatsApp con código de país
+
+  // categoria agrupa los productos. precio es un número, sin comillas.
+  const productos = [
+    { categoria: "Bebidas calientes", nombre: "Espresso", descripcion: "Intenso y de cuerpo completo.", precio: 6, imagen: "cafeespresso.jpg" },
+    { categoria: "Bebidas calientes", nombre: "Cappuccino", descripcion: "Espresso con leche vaporizada y espuma.", precio: 10, imagen: "cappuccino.jpg" },
+    { categoria: "Bebidas calientes", nombre: "Latte", descripcion: "Suave y cremoso, con mucha leche.", precio: 11, imagen: "latte.jpg" },
+    { categoria: "Bebidas frías", nombre: "Café frío", descripcion: "Café helado, refrescante y ligero.", precio: 12, imagen: "cafefrio1.png" },
+    { categoria: "Bebidas frías", nombre: "Frappé", descripcion: "Café batido con hielo y crema.", precio: 14, imagen: "frappe.jpg" },
+    { categoria: "Para acompañar", nombre: "Croissant", descripcion: "Hojaldrado y recién horneado.", precio: 8, imagen: "cruasan.JPG" },
+    { categoria: "Para acompañar", nombre: "Cheesecake", descripcion: "Porción con salsa de frutos rojos.", precio: 12, imagen: "cheesecake.jpg" }
+  ];
+
+  const menu = document.getElementById("menu");
+
+  // Lista de categorías sin repetir
+  const categorias = [...new Set(productos.map(p => p.categoria))];
+
+  menu.innerHTML = categorias.map(function (cat) {
+    const items = productos.filter(p => p.categoria === cat).map(function (p) {
+      const mensaje = "Hola, quiero pedir " + p.nombre;
+      const link = "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensaje);
+      const precio = p.precio !== undefined
+        ? `<span class="punteado"></span><span class="precio">S/ ${p.precio.toFixed(2)}</span>`
+        : "";
+
+      return `
+        <article class="item">
+          <img src="${p.imagen}" alt="${p.nombre}" loading="lazy">
+          <div>
+            <div class="linea"><h3>${p.nombre}</h3>${precio}</div>
+            <p>${p.descripcion}</p>
+            <a class="pedir" href="${link}" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    return `<h2 class="categoria">${cat}</h2>${items}`;
+  }).join("");
+</script>
+</body>
+</html>
